@@ -1,0 +1,64 @@
+plugins {
+    id 'java'
+}
+
+group 'com.vena'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+    flatDir {
+        dirs 'mylib'
+    }
+}
+
+dependencies {
+    compile 'com.sparkjava:spark-core:2.9.1'
+    testCompile 'junit:junit:4.12'
+
+    compile 'org.slf4j:slf4j-simple:1.7.28'
+    compile 'com.google.code.gson:gson:2.8.5'
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'com.vena.MyApp1'
+    }
+}
+
+def name = 'mohsen';
+
+tasks.register("hello") {
+    println "hello ${name}"
+    [3, 1, 4, 1, 5, 9].stream()
+            .map({ it * 2 })
+            .filter({ it % 3 == 0 })
+            .forEach({ println it })
+}
+
+task taskOne {
+    println "==> taskOne"
+    exec {
+        println '==> gonna make you a dir now...'
+        commandLine 'rm', '-rf', "../dirOfGradle3"
+        commandLine 'mkdir', '-p', '../dirOfGradle3'
+        println '==> done doing dirs!'
+    }
+    doLast {
+        4.times { print "$it " }
+    }
+}
+
+task taskTwo {
+    dependsOn taskOne
+    println "==> taskTwo"
+}
+
+def dirSource = 'build/libs/proj1-1.0-SNAPSHOT.jar';
+def dirDest = '../myFileDir';
+
+task('copy', type: Copy) {
+    dependsOn jar
+    from dirSource
+    into dirDest
+}
