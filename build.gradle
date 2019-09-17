@@ -29,27 +29,27 @@ jar {
 def name = 'mohsen';
 
 tasks.register("hello") {
-    println "hello ${name}"
+    println "==> hello ${name}"
     [3, 1, 4, 1, 5, 9].stream()
             .map({ it * 2 })
             .filter({ it % 3 == 0 })
             .forEach({ println it })
 }
 
-task taskOne {
+tasks.register("taskOne") {
     println "==> taskOne"
     exec {
-        println '==> gonna make you a dir now...'
+        println '  gonna make you a dir now...'
         commandLine 'rm', '-rf', "../dirOfGradle3"
         commandLine 'mkdir', '-p', '../dirOfGradle3'
-        println '==> done doing dirs!'
+        println '  done doing dirs!'
     }
     doLast {
         4.times { print "$it " }
     }
 }
 
-task taskTwo {
+tasks.register("taskTwo") {
     dependsOn taskOne
     println "==> taskTwo"
 }
@@ -57,7 +57,8 @@ task taskTwo {
 def dirSource = 'build/libs/proj1-1.0-SNAPSHOT.jar';
 def dirDest = '../myFileDir';
 
-task('copy', type: Copy) {
+tasks.register("copy", Copy) {
+    println "==> doing copy now..."
     dependsOn jar
     from dirSource
     into dirDest
