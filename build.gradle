@@ -7,9 +7,6 @@ version '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
-    flatDir {
-        dirs 'mylib'
-    }
 }
 
 dependencies {
